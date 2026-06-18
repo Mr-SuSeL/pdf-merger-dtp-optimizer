@@ -1,0 +1,27 @@
+# Python bytecode i pamięć podręczna
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Środowiska wirtualne
+.venv/
+venv/
+ENV/
+env/
+
+# Konfiguracja edytorów i IDE (VS Code / Cursor / PyCharm)
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+
+# Pliki systemowe OS
+.DS_Store
+Thumbs.db
+ehthumbs.db
+
+# Pliki wynikowe generowane przez program (opcjonalnie zabezpieczenie)
+*.pdf
