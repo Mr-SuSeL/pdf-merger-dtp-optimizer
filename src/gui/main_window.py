@@ -1,18 +1,14 @@
-# Required installations:
-# pip install customtkinter "pypdf<5"
-
 import os
-import re
 from tkinter import filedialog
 
 import customtkinter as ctk
-from pypdf import PdfMerger
+
+from src.core.pdf_engine import PDFEngine
 
 
 class AresPdfMergerApp(ctk.CTk):
     """Desktop app for merging multiple PDFs into one print-ready document."""
 
-    DEFAULT_OUTPUT_FILENAME = "polaczony_dokument_do_druku.pdf"
     WINDOW_WIDTH = 600
     WINDOW_HEIGHT = 450
 
@@ -141,17 +137,12 @@ class AresPdfMergerApp(ctk.CTk):
         )
         exit_button.grid(row=6, column=0, padx=20, pady=(10, 15), sticky="e")
 
-    @staticmethod
-    def _natural_sort_key(path: str) -> list[str | int]:
-        name = os.path.basename(path).lower()
-        return [int(part) if part.isdigit() else part for part in re.split(r"(\d+)", name)]
-
     def _browse_input_files(self) -> None:
         paths = filedialog.askopenfilenames(filetypes=[("PDF Files", "*.pdf")])
         if not paths:
             return
 
-        self.selected_files = sorted(paths, key=self._natural_sort_key)
+        self.selected_files = PDFEngine.sort_file_paths(list(paths))
         self._refresh_file_preview()
         count = len(self.selected_files)
         self._update_status(f"Wybrano {count} plik(ów). Ustaw folder zapisu i połącz pliki.")
@@ -174,7 +165,7 @@ class AresPdfMergerApp(ctk.CTk):
     def _browse_output(self) -> None:
         directory = filedialog.askdirectory()
         if directory:
-            full_path = os.path.join(directory, self.DEFAULT_OUTPUT_FILENAME)
+            full_path = PDFEngine.build_output_path(directory)
             self.output_path.set(full_path)
             self._update_status("Miejsce zapisu ustawione. Gotowe do połączenia plików.")
 
@@ -188,52 +179,13 @@ class AresPdfMergerApp(ctk.CTk):
 
         self.status_label.configure(text=message, text_color=color)
 
-    def _normalize_output_path(self, path: str) -> str:
-        path = path.strip()
-        if not path.lower().endswith(".pdf"):
-            path += ".pdf"
-        return path
-
     def _merge_pdfs(self) -> None:
-        if len(self.selected_files) < 2:
-            self._update_status("🔴 Błąd: Wybierz co najmniej 2 pliki do połączenia!", is_error=True)
-            return
-
         output = self.output_path.get().strip()
-        if not output:
-            self._update_status("🔴 Błąd: Nie wybrano folderu zapisu!", is_error=True)
-            return
-
-        for path in self.selected_files:
-            if not os.path.isfile(path):
-                self._update_status(
-                    f"🔴 Błąd: Plik nie istnieje: {os.path.basename(path)}",
-                    is_error=True,
-                )
-                return
-
-        output = self._normalize_output_path(output)
-        self.output_path.set(output)
-
         output_dir = os.path.dirname(output)
-        if output_dir and not os.path.isdir(output_dir):
-            self._update_status("🔴 Błąd: Folder docelowy nie istnieje.", is_error=True)
-            return
 
-        merger = PdfMerger()
-        try:
-            self._update_status("Łączenie plików PDF...")
-            for path in self.selected_files:
-                merger.append(path)
-            with open(output, "wb") as output_file:
-                merger.write(output_file)
-            self._update_status("🟢 Sukces! Plik został zapisany.", is_success=True)
-        except Exception as exc:
-            self._update_status(f"🔴 Błąd: {exc}", is_error=True)
-        finally:
-            merger.close()
+        self._update_status("Łączenie plików PDF...")
+        success, message = PDFEngine.merge_files(self.selected_files, output_dir)
+        self._update_status(message, is_error=not success, is_success=success)
 
-
-if __name__ == "__main__":
-    app = AresPdfMergerApp()
-    app.mainloop()
+        if success and output_dir:
+            self.output_path.set(PDFEngine.build_output_path(output_dir))
