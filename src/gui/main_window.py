@@ -6,7 +6,7 @@ import customtkinter as ctk
 from src.core.pdf_engine import PDFEngine
 
 
-class AresPdfMergerApp(ctk.CTk):
+class PdfMergerApp(ctk.CTk):
     """Desktop app for merging multiple PDFs into one print-ready document."""
 
     WINDOW_WIDTH = 600
@@ -18,7 +18,7 @@ class AresPdfMergerApp(ctk.CTk):
         ctk.set_appearance_mode("dark")
         ctk.set_default_color_theme("blue")
 
-        self.title("Ares PDF Merger - Gotowość do Druku")
+        self.title("PDF Merger - Gotowość do Druku")
         self.geometry(f"{self.WINDOW_WIDTH}x{self.WINDOW_HEIGHT}")
         self.resizable(False, False)
         self._center_window()
@@ -41,7 +41,7 @@ class AresPdfMergerApp(ctk.CTk):
 
         header = ctk.CTkLabel(
             self,
-            text="Ares PDF Merger - Łącznik Plików",
+            text="PDF Merger - Łącznik Plików",
             font=ctk.CTkFont(size=22, weight="bold"),
         )
         header.grid(row=0, column=0, padx=24, pady=(20, 14), sticky="w")

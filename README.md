@@ -34,5 +34,5 @@ Projekt został przepisany z monolitu i podzielony na moduły zgodnie z zasadą 
 
 ### 1. Klonowanie repozytorium i przygotowanie folderu
 ```bash
-git clone [https://github.com/twoj-username/pdf-merger-ares.git](https://github.com/twoj-username/pdf-merger-ares.git)
-cd pdf-merger-ares
+git clone https://github.com/twoj-username/pdf-merger.git
+cd pdf-merger

@@ -1,5 +1,5 @@
-from src.gui.main_window import AresPdfMergerApp
+from src.gui.main_window import PdfMergerApp
 
 if __name__ == "__main__":
-    app = AresPdfMergerApp()
+    app = PdfMergerApp()
     app.mainloop()

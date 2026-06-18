@@ -1,3 +1,3 @@
-from src.gui.main_window import AresPdfMergerApp
+from src.gui.main_window import PdfMergerApp
 
-__all__ = ["AresPdfMergerApp"]
+__all__ = ["PdfMergerApp"]
