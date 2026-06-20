@@ -1,6 +1,6 @@
 import os
 
-from PySide6.QtCore import QThread, Signal
+from PySide6.QtCore import Qt, QThread, Signal
 from PySide6.QtWidgets import (
     QComboBox,
     QFileDialog,
@@ -66,16 +66,23 @@ class DtpOptimizerTab(QWidget):
         self._build_ui()
 
     def _build_ui(self) -> None:
+        # Główny kontener pionowy zakładki
         layout = QVBoxLayout(self)
-        layout.setContentsMargins(24, 20, 24, 12)
-        layout.setSpacing(10)
+        layout.setContentsMargins(20, 15, 20, 15)
+        layout.setSpacing(12)
 
         header = QLabel("DTP Optimizer - Przygotowanie do druku")
         header.setObjectName("HeaderLabel")
         layout.addWidget(header)
 
+        # --- SEKCJA: PLIK WEJŚCIOWY ---
         input_group = QGroupBox("Plik wejściowy")
-        input_layout = QHBoxLayout(input_group)
+        input_group.setMinimumHeight(72)  # Zabezpieczenie gabarytu przed zgnieceniem
+        
+        input_layout = QHBoxLayout()
+        input_layout.setContentsMargins(12, 10, 12, 10)
+        input_layout.setSpacing(10)
+        
         self.input_path = QLineEdit()
         self.input_path.setPlaceholderText("Wybierz plik PDF...")
         input_layout.addWidget(self.input_path)
@@ -83,33 +90,62 @@ class DtpOptimizerTab(QWidget):
         browse_input = QPushButton("Przeglądaj")
         browse_input.clicked.connect(self._browse_input)
         input_layout.addWidget(browse_input)
+        
+        input_group.setLayout(input_layout)
         layout.addWidget(input_group)
 
+        # --- SEKCJA: FORMAT DOCELOWY ---
         format_group = QGroupBox("Format docelowy")
-        format_layout = QVBoxLayout(format_group)
+        format_group.setMinimumHeight(125)  # Pancerne minimum mieszczące combo + wiersz mm
+        
+        format_layout = QVBoxLayout()
+        format_layout.setContentsMargins(12, 10, 12, 10)
+        format_layout.setSpacing(12)
 
         self.format_combo = QComboBox()
         self.format_combo.addItems(self.FORMAT_OPTIONS)
         self.format_combo.currentIndexChanged.connect(self._on_format_changed)
+        self.format_combo.setMinimumHeight(28)
         format_layout.addWidget(self.format_combo)
 
-        custom_row = QHBoxLayout()
-        custom_row.addWidget(QLabel("Szerokość (mm):"))
+        dims_layout = QHBoxLayout()
+        dims_layout.setSpacing(10)
+
+        width_label = QLabel("Szerokość (mm):")
         self.width_input = QLineEdit()
         self.width_input.setPlaceholderText("np. 210")
         self.width_input.setEnabled(False)
-        custom_row.addWidget(self.width_input)
+        self.width_input.setMinimumWidth(90)
+        self.width_input.setMinimumHeight(28)
+        self.width_input.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
-        custom_row.addWidget(QLabel("Wysokość (mm):"))
+        height_label = QLabel("Wysokość (mm):")
         self.height_input = QLineEdit()
         self.height_input.setPlaceholderText("np. 297")
         self.height_input.setEnabled(False)
-        custom_row.addWidget(self.height_input)
-        format_layout.addLayout(custom_row)
+        self.height_input.setMinimumWidth(90)
+        self.height_input.setMinimumHeight(28)
+        self.height_input.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
+        dims_layout.addWidget(width_label)
+        dims_layout.addWidget(self.width_input)
+        dims_layout.addSpacing(25)
+        dims_layout.addWidget(height_label)
+        dims_layout.addWidget(self.height_input)
+        dims_layout.addStretch()
+
+        format_layout.addLayout(dims_layout)
+        format_group.setLayout(format_layout)
         layout.addWidget(format_group)
 
+        # --- SEKCJA: PLIK WYJŚCIOWY ---
         output_group = QGroupBox("Plik wyjściowy")
-        output_layout = QHBoxLayout(output_group)
+        output_group.setMinimumHeight(72)  # Zabezpieczenie gabarytu przed zgnieceniem
+        
+        output_layout = QHBoxLayout()
+        output_layout.setContentsMargins(12, 10, 12, 10)
+        output_layout.setSpacing(10)
+        
         self.output_path = QLineEdit()
         self.output_path.setPlaceholderText("Wybierz lokalizację zapisu...")
         output_layout.addWidget(self.output_path)
@@ -117,19 +153,25 @@ class DtpOptimizerTab(QWidget):
         browse_output = QPushButton("Zapisz jako")
         browse_output.clicked.connect(self._browse_output)
         output_layout.addWidget(browse_output)
+        
+        output_group.setLayout(output_layout)
         layout.addWidget(output_group)
 
+        # --- PRZYCISK AKCJI ---
         self.process_button = QPushButton("Konwertuj do CMYK i Skaluj")
         self.process_button.setObjectName("PrimaryAction")
+        self.process_button.setMinimumHeight(40)
         self.process_button.clicked.connect(self._start_processing)
         layout.addWidget(self.process_button)
 
         log_label = QLabel("Konsola operacji:")
         layout.addWidget(log_label)
 
+        # --- KONSOLA LOGÓW ---
         self.log_console = QTextEdit()
         self.log_console.setObjectName("LogConsole")
         self.log_console.setReadOnly(True)
+        self.log_console.setMinimumHeight(120)  # Gwarancja widoczności 5 linii tekstu operacyjnego
         layout.addWidget(self.log_console, stretch=1)
 
     def _on_format_changed(self, index: int) -> None:

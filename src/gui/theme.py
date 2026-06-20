@@ -42,7 +42,8 @@ QLineEdit, QTextEdit, QComboBox {
     background-color: #25252d;
     border: 1px solid #3a3a45;
     border-radius: 4px;
-    padding: 6px 8px;
+    padding: 4px 8px;
+    min-height: 22px;
     color: #e8e8ea;
     selection-background-color: #e85d04;
 }
@@ -117,20 +118,25 @@ QTextEdit#LogConsole {
     font-family: "Consolas", "Courier New", monospace;
     font-size: 12px;
     color: #b8b8c0;
+    min-height: 120px;
 }
 
+/* --- APARATUROWY, PANCERNY QGROUPBOX --- */
 QGroupBox {
     border: 1px solid #2d2d35;
     border-radius: 6px;
-    margin-top: 10px;
-    padding-top: 14px;
+    margin-top: 12px;
+    padding-top: 16px; /* KLUCZOWY FIX: Odpycha zawartość layoutu poniżej linii ramki i tytułu */
     font-weight: bold;
     color: #c8c8cc;
 }
 
 QGroupBox::title {
     subcontrol-origin: margin;
-    left: 10px;
+    subcontrol-position: top left;
+    left: 12px;
+    top: 3px;
     padding: 0 6px;
+    background-color: #1a1a1f; /* Maskuje linię ramki pod tekstem tytułu */
 }
 """

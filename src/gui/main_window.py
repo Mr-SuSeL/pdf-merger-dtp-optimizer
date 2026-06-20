@@ -9,13 +9,19 @@ from src.gui.theme import B3_STYLE
 class PdfMergerApp(QMainWindow):
     """Main application window with tabbed PDF tools."""
 
-    WINDOW_WIDTH = 640
-    WINDOW_HEIGHT = 580
+    # Podbijamy domyślne wymiary, zapewniając pełen oddech dla DTP Optimizera
+    WINDOW_WIDTH = 720
+    WINDOW_HEIGHT = 680
 
     def __init__(self) -> None:
         super().__init__()
-        self.setWindowTitle("PDF Merger - Gotowość do Druku")
-        self.setFixedSize(self.WINDOW_WIDTH, self.WINDOW_HEIGHT)
+        self.setWindowTitle("PDF Merger & DTP")
+        
+        # Rozbijamy sztywne setFixedSize na elastyczny start + pancerne minimum techniczne.
+        # Dzięki temu trzy QGroupBoxy, przycisk i konsola rozwiną się do 100% swoich wymiarów.
+        self.resize(self.WINDOW_WIDTH, self.WINDOW_HEIGHT)
+        self.setMinimumSize(680, 620)
+        
         self.setStyleSheet(B3_STYLE)
         self._center_window()
         self._build_ui()
