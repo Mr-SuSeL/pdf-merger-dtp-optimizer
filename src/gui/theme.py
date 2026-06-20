@@ -57,11 +57,13 @@ QLineEdit:disabled {
     color: #666670;
 }
 
+/* --- KORONNY FIX DLA ZMIAŻDŻONYCH PRZYCISKÓW --- */
 QPushButton {
     background-color: #2d2d35;
     border: 1px solid #3a3a45;
     border-radius: 4px;
-    padding: 8px 14px;
+    padding: 4px 14px; /* Odchudzony padding w pionie, by tekst miał miejsce */
+    min-height: 22px;   /* Twarda blokada dolna - identyczna jak w QLineEdit */
     color: #e8e8ea;
 }
 
@@ -121,12 +123,11 @@ QTextEdit#LogConsole {
     min-height: 120px;
 }
 
-/* --- APARATUROWY, PANCERNY QGROUPBOX --- */
 QGroupBox {
     border: 1px solid #2d2d35;
     border-radius: 6px;
     margin-top: 12px;
-    padding-top: 16px; /* KLUCZOWY FIX: Odpycha zawartość layoutu poniżej linii ramki i tytułu */
+    padding-top: 16px;
     font-weight: bold;
     color: #c8c8cc;
 }
@@ -137,6 +138,6 @@ QGroupBox::title {
     left: 12px;
     top: 3px;
     padding: 0 6px;
-    background-color: #1a1a1f; /* Maskuje linię ramki pod tekstem tytułu */
+    background-color: #1a1a1f;
 }
 """
