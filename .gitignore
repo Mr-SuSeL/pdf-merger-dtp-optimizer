@@ -25,3 +25,7 @@ ehthumbs.db
 
 # Pliki wynikowe generowane przez program (opcjonalnie zabezpieczenie)
 *.pdf
+
+build/
+dist/
+*.exe
