@@ -1,38 +1,19 @@
-# PDF Merger - Łącznik Plików 🚀
+# PDF Merger & DTP Optimizer
 
-Nowoczesna, lekka aplikacja desktopowa stworzona w Pythonie przy użyciu bibliotek **CustomTkinter** oraz **pypdf**. Narzędzie zostało zaprojektowane z myślą o maksymalnym uproszczeniu pracy biurowej i operacyjnej w gastronomii (szybkie łączenie jednostronicowych grafik menu, cenników oraz faktur w wielostronicowe gotowe dokumenty PDF do druku).
+A professional, high-performance desktop application designed for fast PDF merging and automated DTP layout optimization. Built with a modern, dark-themed GUI using Python and PySide6.
 
----
+## 🚀 Features
+* **Advanced PDF Merging:** Seamlessly combine multiple PDF documents with path validation.
+* **DTP Layout Optimization:** Built-in core engine for layout arrangement and DTP tasks.
+* **Modern Desktop Interface:** Clean, dark-mode GUI engineered with PySide6 (Qt6).
+* **Production Ready:** Automated building pipeline generating standalone Windows installers (.exe).
 
-## 📸 Podgląd aplikacji
+## 🛠️ Tech Stack
+* **Language:** Python 3.12+
+* **GUI Framework:** PySide6 (Qt6 bindings)
+* **Distribution:** PyInstaller & Inno Setup 6
 
-![PDF Merger Interface](img/pdf_merger1.png)
-
----
-
-## ✨ Kluczowe funkcjonalności
-
-* **Intuicyjny interfejs Multi-Select:** Wybór wielu plików jednocześnie z jednego katalogu systemowego za pomocą jednego kliknięcia (obsługa kombinacji `Ctrl` / `Shift` lub przeciągania myszką).
-* **Inteligentne Sortowanie Naturalne (Natural Sort):** Zaawansowany algorytm dba o to, aby pliki tekstowe i liczbowe układały się w perfekcyjnej kolejności logicznej (np. `strona_1.pdf`, `strona_2.pdf`, `strona_10.pdf`).
-* **Podgląd kolejki w czasie rzeczywistym:** Przejrzysty i czytelny boks tekstowy prezentuje ponumerowaną strukturę dokumentu wyjściowego przed ostatecznym scaleniem.
-* **Automatyzacja ścieżki zapisu:** Użytkownik wskazuje jedynie folder docelowy, a system automatycznie buduje bezpieczną strukturę pliku wynikowego (`polaczony_dokument_do_druku.pdf`).
-* **Odporność na błędy (Fail-Safe):** Pełne przechwytywanie wyjątków operacji dyskowych i uszkodzonych plików uniemożliwia zawieszenie się aplikacji.
-
----
-
-## 🛠️ Architektura projektu
-
-Projekt został przepisany z monolitu i podzielony na moduły zgodnie z zasadą separacji odpowiedzialności (*Separation of Concerns*):
-
-* `src/core/` — Odpowiada za niskopoziomowe parsowanie, sortowanie i binarną manipulację strukturą plików PDF.
-* `src/gui/` — Zarządza nowoczesnym interfejsem w ciemnym motywie graficznym (*Dark Theme*) z akcentami błękitu i karmazynu.
-* `main.py` — Lekki punkt startowy aplikacji (*Entrypoint*).
-
----
-
-## 🚀 Szybki start
-
-### 1. Klonowanie repozytorium i przygotowanie folderu
-```bash
-git clone https://github.com/twoj-username/pdf-merger.git
-cd pdf-merger
+## 📦 Building from Source
+To compile the standalone executable and build the machine installer locally, simply run the automated production pipeline:
+```powershell
+.\build_production.bat
